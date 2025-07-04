@@ -11,6 +11,9 @@ namespace App.Game.Managers {
         [SerializeField] private AudioMixer MasterMixer;
     // ? BASE METHODS===============================================================================================================================
         private void OnEnable() {
+            Events.Application.OnAppOpened += SetStoredVolume;
+            Events.Settings.OnSettingsClosed += SetStoredVolume;
+
             Events.Settings.OnMasterVolumeChanged += UpdateMasterChannelVolume;
             Events.Settings.OnMusicVolumeChanged += UpdateMusicChannelVolume;
             Events.Settings.OnUIVolumeChanged += UpdateUIChannelVolume;
@@ -20,6 +23,9 @@ namespace App.Game.Managers {
         }
         
         private void OnDisable() {
+            Events.Application.OnAppOpened -= SetStoredVolume;
+            Events.Settings.OnSettingsClosed -= SetStoredVolume;
+
             Events.Settings.OnMasterVolumeChanged -= UpdateMasterChannelVolume;
             Events.Settings.OnMusicVolumeChanged -= UpdateMusicChannelVolume;
             Events.Settings.OnUIVolumeChanged -= UpdateUIChannelVolume;
@@ -28,9 +34,6 @@ namespace App.Game.Managers {
             Events.Settings.OnVoiceVolumeChanged -= UpdateVoiceChannelVolume;
         }
     
-        private void Start() {
-            this.SetStoredVolume();
-        }
     // ? CUSTOM METHODS=============================================================================================================================
         private void SetStoredVolume() {
             // TODO: Implement a SettingsData class and send SettingsLoaded<> event from SavesManager to prevent AudioManager access to PlayerPrefs directly (SRP)
@@ -41,13 +44,13 @@ namespace App.Game.Managers {
             this.UpdateAtmosphereChannelVolume(PlayerPrefs.GetFloat("atmosphereVolume", 0.5f));
             this.UpdateVoiceChannelVolume(PlayerPrefs.GetFloat("voiceVolume", 0.5f));
         }
-
+    
+    // ? EVENT METHODS==============================================================================================================================
         private void UpdateMasterChannelVolume(float newValue) => this.MasterMixer.SetFloat("master_vol", Tools.Audio.LinearToDecibel(newValue));
         private void UpdateMusicChannelVolume(float newValue) => this.MasterMixer.SetFloat("music_vol", Tools.Audio.LinearToDecibel(newValue));
         private void UpdateUIChannelVolume(float newValue) => this.MasterMixer.SetFloat("ui_vol", Tools.Audio.LinearToDecibel(newValue));
         private void UpdateSFXChannelVolume(float newValue) => this.MasterMixer.SetFloat("sfx_vol", Tools.Audio.LinearToDecibel(newValue));
         private void UpdateAtmosphereChannelVolume(float newValue) => this.MasterMixer.SetFloat("atmosphere_vol", Tools.Audio.LinearToDecibel(newValue));
         private void UpdateVoiceChannelVolume(float newValue) => this.MasterMixer.SetFloat("voice_vol", Tools.Audio.LinearToDecibel(newValue));
-    // ? EVENT METHODS==============================================================================================================================
     }
 }

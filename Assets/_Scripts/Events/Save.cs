@@ -8,6 +8,7 @@ namespace App.Events {
         public static Action<string> OnGameLoaded;
         public static Action<string> OnSaveDeleted;
         //public static Action<string> OnAutoSaved;
+        
         // * CLOUD
         //public static Action OnCloudSyncCompleted;
         //public static Action OnCloudSyncEnabled;

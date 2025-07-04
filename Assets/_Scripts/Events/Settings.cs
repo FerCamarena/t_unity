@@ -5,10 +5,10 @@ namespace App.Events {
         // * GENERAL
         public static Action OnSettingsOpened;
         public static Action OnSettingsClosed;
+        public static Action OnSettingsToggled;
         public static Action OnSettingsReseted;
         public static Action OnSettingsSaved;
         public static Action OnSettingsChanged;
-        //public static Action OnSettingsLoaded;
         
         // * VOLUME
         public static Action<float> OnMasterVolumeChanged;
