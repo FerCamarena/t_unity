@@ -9,7 +9,7 @@ namespace App.Game.Managers {
 
     // ? PARAMETERS=================================================================================================================================
         // * REFERENCES
-        [SerializeField] private AudioMixer audioMixer;
+        
         // * INTERNAL
 
         // * ATTRIBUTES
