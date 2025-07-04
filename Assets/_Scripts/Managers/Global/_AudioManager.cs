@@ -28,7 +28,7 @@ namespace App.Game.Managers {
             Events.Settings.OnVoiceVolumeUpdated -= UpdateVoiceChannelVolume;
         }
     
-        private void Awake() {
+        private void Start() {
             this.SetStoredVolume();
         }
     // ? CUSTOM METHODS=============================================================================================================================
@@ -40,7 +40,7 @@ namespace App.Game.Managers {
             this.UpdateAtmosphereChannelVolume(PlayerPrefs.GetFloat("atmosphereVolume", 0.5f));
             this.UpdateVoiceChannelVolume(PlayerPrefs.GetFloat("voiceVolume", 0.5f));
         }
-
+        
         private void UpdateMasterChannelVolume(float newValue) => this.MasterMixer.SetFloat("master_vol", Tools.Audio.LinearToDecibel(newValue));
         private void UpdateMusicChannelVolume(float newValue) => this.MasterMixer.SetFloat("music_vol", Tools.Audio.LinearToDecibel(newValue));
         private void UpdateUIChannelVolume(float newValue) => this.MasterMixer.SetFloat("ui_vol", Tools.Audio.LinearToDecibel(newValue));

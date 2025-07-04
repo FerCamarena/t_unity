@@ -56,7 +56,7 @@ namespace App.Game.Managers {
         // TODO: Use Mathf to approximatelly 0 results
         // TODO: Implement logaritmic adjustment to sliders from 0-1 values
         // TODO: Update scene references to use enum 
-        // ? BASE METHODS===============================================================================================================================
+    // ? BASE METHODS===============================================================================================================================
         private void OnEnable() {
             Events.Settings.OnSettingsChanged += this.ChangesMade;
         }
