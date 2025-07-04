@@ -5,7 +5,7 @@ MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - MasterMixer: {fileID: 24100000, guid: 2d3a24cc650a88c4b9c058becec723e0, type: 2}
-  executionOrder: 0
+  executionOrder: -2
   icon: {instanceID: 0}
   userData: 
   assetBundleName: 
