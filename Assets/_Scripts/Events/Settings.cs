@@ -5,18 +5,18 @@ namespace App.Events {
         // * GENERAL
         public static Action OnSettingsOpened;
         public static Action OnSettingsClosed;
+        public static Action OnSettingsToggled;
         public static Action OnSettingsReseted;
         public static Action OnSettingsSaved;
         public static Action OnSettingsChanged;
-        //public static Action OnSettingsLoaded;
         
         // * VOLUME
-        public static Action<float> OnMasterVolumeUpdated;
-        public static Action<float> OnMusicVolumeUpdated;
-        public static Action<float> OnUIVolumeUpdated;
+        public static Action<float> OnMasterVolumeChanged;
+        public static Action<float> OnMusicVolumeChanged;
+        public static Action<float> OnUIVolumeChanged;
         public static Action<float> OnSFXVolumeUpdated;
-        public static Action<float> OnAtmosphereVolumeUpdated;
-        public static Action<float> OnVoiceVolumeUpdated;
+        public static Action<float> OnAtmosphereVolumeChanged;
+        public static Action<float> OnVoiceVolumeChanged;
         
         // * GRAPHICS
         public static Action OnQualityUpdated;

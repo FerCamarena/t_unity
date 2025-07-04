@@ -9,12 +9,14 @@ namespace App.Game.Managers {
 
     // ? PARAMETERS=================================================================================================================================
         // * REFERENCES
-        [SerializeField] private AudioMixer audioMixer;
+        
         // * INTERNAL
 
         // * ATTRIBUTES
         [SerializeField] public int pauseSceneBuildIndex;
+        [SerializeField] public int mainMenuSceneBuildIndex;
         [SerializeField] public int menuLoaderSceneBuildIndex;
+        [SerializeField] public int gameSceneBuildIndex;
         [SerializeField] public int gameLoaderSceneBuildIndex;
         [SerializeField] public int resultsSceneBuildIndex;
 
@@ -24,43 +26,50 @@ namespace App.Game.Managers {
         // TODO: Add multiple debug, warning and error handling conditionals
     // ? BASE METHODS===============================================================================================================================
         private void OnEnable() {
-            Events.InGame.OnGameOver += GameOver;
+            //Starting the app with uncompleted game or pressing over Continue on Main menu
+            Events.Application.OnSessionResumed += InitializeGame;
+
+            //Pressing over NewGame on Main menu
+            Events.Application.OnNewGameSession += InitializeGame;
+
+            Events.InGame.OnGameOver += EndGame;
+            Events.Application.OnAppClosed += ExitApp;
+            Events.Settings.OnSettingsToggled += ToggleSettings;
         }
         
         private void OnDisable() {
-            Events.InGame.OnGameOver -= GameOver;
-        }
-
-        private void Awake() {
-            if (!VerifiedManagers()) DontDestroyOnLoad(this.gameObject);
-            else Destroy(this.gameObject);
+            Events.Application.OnSessionResumed -= InitializeGame;
+            Events.Application.OnNewGameSession -= InitializeGame;
+            Events.InGame.OnGameOver -= EndGame;
+            Events.Application.OnAppClosed -= ExitApp;
+            Events.Settings.OnSettingsToggled -= ToggleSettings;
         }
 
     // ? CUSTOM METHODS=============================================================================================================================
-        private bool VerifiedManagers() {
-            GameObject managerInstance = GameObject.Find("Managers");
-
-            if (!managerInstance.GetComponent<_RouterManager>() && !managerInstance.CompareTag("GameController")) {
-                Destroy(managerInstance);
-                return false;
-            }
-
-            return false;
-        }
+        
     // ? EVENT METHODS==============================================================================================================================
-        public void GameStart() {
+        public void LoadMenu() {
+            if (SceneManager.GetActiveScene().buildIndex == 0) this.ChangeScene(this.mainMenuSceneBuildIndex);
+        }
+
+        private void StartNewGame() {
             PlayerPrefs.SetInt("InGame", 1);
             
-            this.ChangeScene(gameLoaderSceneBuildIndex);
+            // ? Open game scene instead of loader, loader is opened from menu instead
+            this.ChangeScene(this.gameSceneBuildIndex);
         }
 
-        public void GameOver() {
+        private void InitializeGame() {
+            this.ChangeScene(this.gameLoaderSceneBuildIndex);
+        }
+
+        public void EndGame() {
             PlayerPrefs.SetInt("InGame", 0);
             
-            this.ChangeScene(resultsSceneBuildIndex);
+            this.ChangeScene(this.resultsSceneBuildIndex);
         }
 
-        public void QuitApp() {
+        public void ExitApp() {
             //Enabling Editor playmode exitting
             #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
@@ -69,7 +78,7 @@ namespace App.Game.Managers {
             #endif
         }
 
-        public void SettingsMenu() {
+        public void ToggleSettings() {
             if (PlayerPrefs.GetInt("SettingsOpen") == 1) {
                 PlayerPrefs.SetInt("SettingsOpen", 0);
                 if(SceneManager.GetSceneByBuildIndex(this.pauseSceneBuildIndex).isLoaded)
