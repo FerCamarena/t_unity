@@ -49,7 +49,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DEBUG: 0
-  SavesManager: {fileID: 0}
+  appManagerPrefab: {fileID: 9125321634561519781}
+  savesManagerPrefab: {fileID: 3251631625963367022, guid: ff729bf09e5ac2b4f8844ba2338f393b, type: 3}
+  uiManagerPrefab: {fileID: 218827458752930336, guid: a462c99bc87e14c46bb477a1ff7e040e, type: 3}
+  routerManagerPrefab: {fileID: 1871855682443309355, guid: 21e8cc4fe57e5514392662ecc9df5430, type: 3}
+  audioManagerPrefab: {fileID: 1167345121468407117, guid: bcf94c6060df42b428cefcbc8940d48b, type: 3}
+  SavesManager: {fileID: 5019122375109744988}
   UIManager: {fileID: 7497199078432784938}
   RouterManager: {fileID: 6940210653118383845}
   AudioManager: {fileID: 5481484889106280361}
@@ -62,16 +67,8 @@ PrefabInstance:
     m_TransformParent: {fileID: 4071285050179792853}
     m_Modifications:
     - target: {fileID: 218827458752930336, guid: a462c99bc87e14c46bb477a1ff7e040e, type: 3}
-      propertyPath: m_Icon
-      value: 
-      objectReference: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
-    - target: {fileID: 218827458752930336, guid: a462c99bc87e14c46bb477a1ff7e040e, type: 3}
       propertyPath: m_Name
       value: UIManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 218827458752930336, guid: a462c99bc87e14c46bb477a1ff7e040e, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4439353833433107172, guid: a462c99bc87e14c46bb477a1ff7e040e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -196,6 +193,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8215826858024947359, guid: ff729bf09e5ac2b4f8844ba2338f393b, type: 3}
   m_PrefabInstance: {fileID: 3480580013020868624}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5019122375109744988 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8496603791218403660, guid: ff729bf09e5ac2b4f8844ba2338f393b, type: 3}
+  m_PrefabInstance: {fileID: 3480580013020868624}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b88cd2e90869fc249a351267c7051a7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6915764428550521921
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -208,10 +216,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: AudioManager
       objectReference: {fileID: 0}
-    - target: {fileID: 1435415100102061032, guid: bcf94c6060df42b428cefcbc8940d48b, type: 3}
-      propertyPath: MasterMixer
-      value: 
-      objectReference: {fileID: 24100000, guid: 2d3a24cc650a88c4b9c058becec723e0, type: 2}
     - target: {fileID: 5699122191470229948, guid: bcf94c6060df42b428cefcbc8940d48b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -281,25 +285,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4071285050179792853}
     m_Modifications:
-    - target: {fileID: 1576056828711573218, guid: 21e8cc4fe57e5514392662ecc9df5430, type: 3}
-      propertyPath: mainMenuSceneBuildIndex
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1576056828711573218, guid: 21e8cc4fe57e5514392662ecc9df5430, type: 3}
-      propertyPath: menuLoaderSceneBuildIndex
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1871855682443309355, guid: 21e8cc4fe57e5514392662ecc9df5430, type: 3}
-      propertyPath: m_Icon
-      value: 
-      objectReference: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
     - target: {fileID: 1871855682443309355, guid: 21e8cc4fe57e5514392662ecc9df5430, type: 3}
       propertyPath: m_Name
       value: RouterManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 1871855682443309355, guid: 21e8cc4fe57e5514392662ecc9df5430, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 2839665195566569967, guid: 21e8cc4fe57e5514392662ecc9df5430, type: 3}
       propertyPath: m_LocalPosition.x
