@@ -362,6 +362,7 @@ namespace App.Game.Managers {
         public void UpdateUIVolume() {
             PlayerPrefs.SetFloat("uiVolume", this.uiVolumeSlider.value);
             this.audioMixer.SetFloat("ui_vol", Tools.Audio.LinearToDecibel(this.uiVolumeSlider.value));
+            if (this.uiVolumeSlider.value > 0.0f && this.masterVolumeSlider.value == 0.0f) this.ToggleMasterVolume();
 
             Events.Settings.OnUIVolumeUpdated?.Invoke(this.uiVolumeSlider.value);
             Events.Settings.OnSettingsChanged?.Invoke();
@@ -400,6 +401,7 @@ namespace App.Game.Managers {
         public void UpdateAtmosphereVolume() {
             PlayerPrefs.SetFloat("atmosphereVolume", this.atmosphereVolumeSlider.value);
             this.audioMixer.SetFloat("atmosphere_vol", Tools.Audio.LinearToDecibel(this.atmosphereVolumeSlider.value));
+            if (this.atmosphereVolumeSlider.value > 0.0f && this.masterVolumeSlider.value == 0.0f) this.ToggleMasterVolume();
 
             Events.Settings.OnAtmosphereVolumeUpdated?.Invoke(this.atmosphereVolumeSlider.value);
             Events.Settings.OnSettingsChanged?.Invoke();
@@ -418,6 +420,7 @@ namespace App.Game.Managers {
         public void UpdateVoiceVolume() {
             PlayerPrefs.SetFloat("voiceVolume", this.voiceVolumeSlider.value);
             this.audioMixer.SetFloat("voice_vol", Tools.Audio.LinearToDecibel(this.voiceVolumeSlider.value));
+            if (this.voiceVolumeSlider.value > 0.0f && this.masterVolumeSlider.value == 0.0f) this.ToggleMasterVolume();
 
             Events.Settings.OnVoiceVolumeUpdated?.Invoke(this.voiceVolumeSlider.value);
             Events.Settings.OnSettingsChanged?.Invoke();
