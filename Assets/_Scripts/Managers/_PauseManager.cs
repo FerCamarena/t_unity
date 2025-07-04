@@ -281,7 +281,7 @@ namespace App.Game.Managers {
                 }
             }
 
-            Events.Settings.OnMasterVolumeUpdated?.Invoke(this.masterVolumeSlider.value);
+            Events.Settings.OnMasterVolumeChanged?.Invoke(this.masterVolumeSlider.value);
             Events.Settings.OnSettingsChanged?.Invoke();
         }
 
@@ -343,7 +343,7 @@ namespace App.Game.Managers {
             
             if (this.musicVolumeSlider.value > 0.0f && this.masterVolumeSlider.value == 0.0f) this.ToggleMasterVolume();
 
-            Events.Settings.OnMusicVolumeUpdated?.Invoke(this.musicVolumeSlider.value);
+            Events.Settings.OnMusicVolumeChanged?.Invoke(this.musicVolumeSlider.value);
             Events.Settings.OnSettingsChanged?.Invoke();
         }
 
@@ -362,7 +362,7 @@ namespace App.Game.Managers {
 
             if (this.uiVolumeSlider.value > 0.0f && this.masterVolumeSlider.value == 0.0f) this.ToggleMasterVolume();
 
-            Events.Settings.OnUIVolumeUpdated?.Invoke(this.uiVolumeSlider.value);
+            Events.Settings.OnUIVolumeChanged?.Invoke(this.uiVolumeSlider.value);
             Events.Settings.OnSettingsChanged?.Invoke();
         }
 
@@ -400,7 +400,7 @@ namespace App.Game.Managers {
 
             if (this.atmosphereVolumeSlider.value > 0.0f && this.masterVolumeSlider.value == 0.0f) this.ToggleMasterVolume();
 
-            Events.Settings.OnAtmosphereVolumeUpdated?.Invoke(this.atmosphereVolumeSlider.value);
+            Events.Settings.OnAtmosphereVolumeChanged?.Invoke(this.atmosphereVolumeSlider.value);
             Events.Settings.OnSettingsChanged?.Invoke();
         }
 
@@ -419,7 +419,7 @@ namespace App.Game.Managers {
 
             if (this.voiceVolumeSlider.value > 0.0f && this.masterVolumeSlider.value == 0.0f) this.ToggleMasterVolume();
 
-            Events.Settings.OnVoiceVolumeUpdated?.Invoke(this.voiceVolumeSlider.value);
+            Events.Settings.OnVoiceVolumeChanged?.Invoke(this.voiceVolumeSlider.value);
             Events.Settings.OnSettingsChanged?.Invoke();
         }
 

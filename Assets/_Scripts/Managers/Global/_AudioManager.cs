@@ -11,21 +11,21 @@ namespace App.Game.Managers {
         [SerializeField] private AudioMixer MasterMixer;
     // ? BASE METHODS===============================================================================================================================
         private void OnEnable() {
-            Events.Settings.OnMasterVolumeUpdated += UpdateMasterChannelVolume;
-            Events.Settings.OnMusicVolumeUpdated += UpdateMusicChannelVolume;
-            Events.Settings.OnUIVolumeUpdated += UpdateUIChannelVolume;
+            Events.Settings.OnMasterVolumeChanged += UpdateMasterChannelVolume;
+            Events.Settings.OnMusicVolumeChanged += UpdateMusicChannelVolume;
+            Events.Settings.OnUIVolumeChanged += UpdateUIChannelVolume;
             Events.Settings.OnSFXVolumeUpdated += UpdateSFXChannelVolume;
-            Events.Settings.OnAtmosphereVolumeUpdated += UpdateAtmosphereChannelVolume;
-            Events.Settings.OnVoiceVolumeUpdated += UpdateVoiceChannelVolume;
+            Events.Settings.OnAtmosphereVolumeChanged += UpdateAtmosphereChannelVolume;
+            Events.Settings.OnVoiceVolumeChanged += UpdateVoiceChannelVolume;
         }
         
         private void OnDisable() {
-            Events.Settings.OnMasterVolumeUpdated -= UpdateMasterChannelVolume;
-            Events.Settings.OnMusicVolumeUpdated -= UpdateMusicChannelVolume;
-            Events.Settings.OnUIVolumeUpdated -= UpdateUIChannelVolume;
+            Events.Settings.OnMasterVolumeChanged -= UpdateMasterChannelVolume;
+            Events.Settings.OnMusicVolumeChanged -= UpdateMusicChannelVolume;
+            Events.Settings.OnUIVolumeChanged -= UpdateUIChannelVolume;
             Events.Settings.OnSFXVolumeUpdated -= UpdateSFXChannelVolume;
-            Events.Settings.OnAtmosphereVolumeUpdated -= UpdateAtmosphereChannelVolume;
-            Events.Settings.OnVoiceVolumeUpdated -= UpdateVoiceChannelVolume;
+            Events.Settings.OnAtmosphereVolumeChanged -= UpdateAtmosphereChannelVolume;
+            Events.Settings.OnVoiceVolumeChanged -= UpdateVoiceChannelVolume;
         }
     
         private void Start() {
@@ -33,6 +33,7 @@ namespace App.Game.Managers {
         }
     // ? CUSTOM METHODS=============================================================================================================================
         private void SetStoredVolume() {
+            // TODO: Implement a SettingsData class and send SettingsLoaded<> event from SavesManager to prevent AudioManager access to PlayerPrefs directly (SRP)
             this.UpdateMasterChannelVolume(PlayerPrefs.GetFloat("masterVolume", 0.5f));
             this.UpdateMusicChannelVolume(PlayerPrefs.GetFloat("musicVolume", 0.5f));
             this.UpdateUIChannelVolume(PlayerPrefs.GetFloat("uiVolume", 0.5f));
@@ -40,7 +41,7 @@ namespace App.Game.Managers {
             this.UpdateAtmosphereChannelVolume(PlayerPrefs.GetFloat("atmosphereVolume", 0.5f));
             this.UpdateVoiceChannelVolume(PlayerPrefs.GetFloat("voiceVolume", 0.5f));
         }
-        
+
         private void UpdateMasterChannelVolume(float newValue) => this.MasterMixer.SetFloat("master_vol", Tools.Audio.LinearToDecibel(newValue));
         private void UpdateMusicChannelVolume(float newValue) => this.MasterMixer.SetFloat("music_vol", Tools.Audio.LinearToDecibel(newValue));
         private void UpdateUIChannelVolume(float newValue) => this.MasterMixer.SetFloat("ui_vol", Tools.Audio.LinearToDecibel(newValue));

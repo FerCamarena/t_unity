@@ -11,12 +11,12 @@ namespace App.Events {
         //public static Action OnSettingsLoaded;
         
         // * VOLUME
-        public static Action<float> OnMasterVolumeUpdated;
-        public static Action<float> OnMusicVolumeUpdated;
-        public static Action<float> OnUIVolumeUpdated;
+        public static Action<float> OnMasterVolumeChanged;
+        public static Action<float> OnMusicVolumeChanged;
+        public static Action<float> OnUIVolumeChanged;
         public static Action<float> OnSFXVolumeUpdated;
-        public static Action<float> OnAtmosphereVolumeUpdated;
-        public static Action<float> OnVoiceVolumeUpdated;
+        public static Action<float> OnAtmosphereVolumeChanged;
+        public static Action<float> OnVoiceVolumeChanged;
         
         // * GRAPHICS
         public static Action OnQualityUpdated;
