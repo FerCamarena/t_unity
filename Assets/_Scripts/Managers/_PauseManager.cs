@@ -174,17 +174,17 @@ namespace App.Game.Managers {
                 default:
                 case MenuAction.none:
                     this.LoadPreviousSettings();
-                    this.RouterManager.SettingsMenu();
+                    this.RouterManager.ToggleSettings();
                 break;
                 case MenuAction.menu:
                     this.LoadPreviousSettings();
-                    this.RouterManager.SettingsMenu();
+                    this.RouterManager.ToggleSettings();
                     if (this.nextAction == MenuAction.menu) PlayerPrefs.SetInt("InGame", 0);
                     this.RouterManager.ChangeScene(this.RouterManager.menuLoaderSceneBuildIndex);
                 break;
                 case MenuAction.retry:
                     this.LoadPreviousSettings();
-                    this.RouterManager.SettingsMenu();
+                    this.RouterManager.ToggleSettings();
                     this.RouterManager.GameStart();
                 break;
                 case MenuAction.defaults:
