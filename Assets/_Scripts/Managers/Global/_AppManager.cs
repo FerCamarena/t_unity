@@ -7,6 +7,9 @@ namespace App.Game.Managers {
     [SerializeField] private bool DEBUG = false;
 
     // ? PARAMETERS=================================================================================================================================
+        public _RouterManager RouterManager;
+        public _AudioManager AudioManager;
+        public _UIManager UIManager;
 
     // ? BASE METHODS===============================================================================================================================
         public static _AppManager Instance { get; private set; }
@@ -19,6 +22,7 @@ namespace App.Game.Managers {
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
 
+            this.InitializeManagers();
         }
 
         private void Start() {
@@ -26,6 +30,34 @@ namespace App.Game.Managers {
         }
 
     // ? CUSTOM METHODS=============================================================================================================================
+        private void InitializeManagers() {
+            if (this.RouterManager == null) {
+                this.RouterManager = GetComponentInChildren<_RouterManager>(true);
+                if (this.RouterManager == null) {
+                    var routerManagerprefab = Resources.Load<GameObject>("RouterManager");
+                    this.RouterManager = Instantiate(routerManagerprefab, this.transform).GetComponent<_RouterManager>();
+                }
+            }
+
+            if (this.AudioManager == null) {
+                this.AudioManager = GetComponentInChildren<_AudioManager>(true);
+
+                if (this.AudioManager == null) {
+                    var audioManagerPrefab = Resources.Load<GameObject>("AudioManager");
+                    this.AudioManager = Instantiate(audioManagerPrefab, this.transform).GetComponent<_AudioManager>();
+                }
+            }
+
+            if (this.UIManager == null) {
+                this.UIManager = GetComponentInChildren<_UIManager>(true);
+
+                if (this.UIManager == null) {
+                    var uiManagerPrefab = Resources.Load<GameObject>("UIManager");
+                    this.UIManager = Instantiate(uiManagerPrefab, this.transform).GetComponent<_UIManager>();
+                }
+            }
+        }
+
         private IEnumerator DelayedLoad() {
             // TODO: Add conditional logic to give option to wait after input or time
             // Time based
