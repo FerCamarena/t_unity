@@ -14,6 +14,7 @@ namespace App.Game.Managers {
 
         // * ATTRIBUTES
         [SerializeField] public int pauseSceneBuildIndex;
+        [SerializeField] public int mainMenuSceneBuildIndex;
         [SerializeField] public int menuLoaderSceneBuildIndex;
         [SerializeField] public int gameLoaderSceneBuildIndex;
         [SerializeField] public int resultsSceneBuildIndex;
@@ -31,33 +32,23 @@ namespace App.Game.Managers {
             Events.InGame.OnGameOver -= GameOver;
         }
 
-        private void Awake() {
-            if (!VerifiedManagers()) DontDestroyOnLoad(this.gameObject);
-            else Destroy(this.gameObject);
-        }
-
     // ? CUSTOM METHODS=============================================================================================================================
-        private bool VerifiedManagers() {
-            GameObject managerInstance = GameObject.Find("Managers");
-
-            if (!managerInstance.GetComponent<_RouterManager>() && !managerInstance.CompareTag("GameController")) {
-                Destroy(managerInstance);
-                return false;
-            }
-
-            return false;
-        }
+        
     // ? EVENT METHODS==============================================================================================================================
+        public void LoadMenu() {
+            if (SceneManager.GetActiveScene().buildIndex == 0) this.ChangeScene(this.mainMenuSceneBuildIndex);
+        }
+
         public void GameStart() {
             PlayerPrefs.SetInt("InGame", 1);
             
-            this.ChangeScene(gameLoaderSceneBuildIndex);
+            this.ChangeScene(this.gameLoaderSceneBuildIndex);
         }
 
         public void GameOver() {
             PlayerPrefs.SetInt("InGame", 0);
             
-            this.ChangeScene(resultsSceneBuildIndex);
+            this.ChangeScene(this.resultsSceneBuildIndex);
         }
 
         public void QuitApp() {
@@ -69,7 +60,7 @@ namespace App.Game.Managers {
             #endif
         }
 
-        public void SettingsMenu() {
+        public void ToggleSettings() {
             if (PlayerPrefs.GetInt("SettingsOpen") == 1) {
                 PlayerPrefs.SetInt("SettingsOpen", 0);
                 if(SceneManager.GetSceneByBuildIndex(this.pauseSceneBuildIndex).isLoaded)
