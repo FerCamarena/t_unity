@@ -14,7 +14,6 @@ namespace App.Game.Managers {
     // ? PARAMETERS=================================================================================================================================
         // * RERERENCES
         [SerializeField] private _RouterManager RouterManager;
-        [SerializeField] private AudioMixer audioMixer;
         [SerializeField] private GameObject localEventSystem;
         [SerializeField] private GameObject mainMenuButton;
         [SerializeField] private GameObject restartGameButton;
@@ -220,7 +219,6 @@ namespace App.Game.Managers {
 
         public void UpdateMasterVolume() {
             PlayerPrefs.SetFloat("masterVolume", this.masterVolumeSlider.value);
-            this.audioMixer.SetFloat("master_vol", Tools.Audio.LinearToDecibel(this.masterVolumeSlider.value));
 
             if (this.masterVolumeSlider.value == 0.0f) {
                 // Music
@@ -342,7 +340,7 @@ namespace App.Game.Managers {
 
         public void UpdateMusicVolume() {
             PlayerPrefs.SetFloat("musicVolume", this.musicVolumeSlider.value);
-            this.audioMixer.SetFloat("music_vol", Tools.Audio.LinearToDecibel(this.musicVolumeSlider.value));
+            
             if (this.musicVolumeSlider.value > 0.0f && this.masterVolumeSlider.value == 0.0f) this.ToggleMasterVolume();
 
             Events.Settings.OnMusicVolumeUpdated?.Invoke(this.musicVolumeSlider.value);
@@ -361,7 +359,7 @@ namespace App.Game.Managers {
         
         public void UpdateUIVolume() {
             PlayerPrefs.SetFloat("uiVolume", this.uiVolumeSlider.value);
-            this.audioMixer.SetFloat("ui_vol", Tools.Audio.LinearToDecibel(this.uiVolumeSlider.value));
+
             if (this.uiVolumeSlider.value > 0.0f && this.masterVolumeSlider.value == 0.0f) this.ToggleMasterVolume();
 
             Events.Settings.OnUIVolumeUpdated?.Invoke(this.uiVolumeSlider.value);
@@ -380,7 +378,6 @@ namespace App.Game.Managers {
 
         public void UpdateSFXVolume() {
             PlayerPrefs.SetFloat("sfxVolume", this.sfxVolumeSlider.value);
-            this.audioMixer.SetFloat("sfx_vol", Tools.Audio.LinearToDecibel(this.sfxVolumeSlider.value));
             
             if (this.sfxVolumeSlider.value > 0.0f && this.masterVolumeSlider.value == 0.0f) this.ToggleMasterVolume();
 
@@ -400,7 +397,7 @@ namespace App.Game.Managers {
 
         public void UpdateAtmosphereVolume() {
             PlayerPrefs.SetFloat("atmosphereVolume", this.atmosphereVolumeSlider.value);
-            this.audioMixer.SetFloat("atmosphere_vol", Tools.Audio.LinearToDecibel(this.atmosphereVolumeSlider.value));
+
             if (this.atmosphereVolumeSlider.value > 0.0f && this.masterVolumeSlider.value == 0.0f) this.ToggleMasterVolume();
 
             Events.Settings.OnAtmosphereVolumeUpdated?.Invoke(this.atmosphereVolumeSlider.value);
@@ -419,7 +416,7 @@ namespace App.Game.Managers {
 
         public void UpdateVoiceVolume() {
             PlayerPrefs.SetFloat("voiceVolume", this.voiceVolumeSlider.value);
-            this.audioMixer.SetFloat("voice_vol", Tools.Audio.LinearToDecibel(this.voiceVolumeSlider.value));
+
             if (this.voiceVolumeSlider.value > 0.0f && this.masterVolumeSlider.value == 0.0f) this.ToggleMasterVolume();
 
             Events.Settings.OnVoiceVolumeUpdated?.Invoke(this.voiceVolumeSlider.value);
