@@ -39,6 +39,8 @@ namespace App.Game.Managers {
         [SerializeField] private MenuAction nextAction = 0;
         [SerializeField] private bool isActionConfirmed = false;
 
+        // * ATTRIBUTES
+
         // ! temp
         // NUEVO: Almacena los valores de inicio para saber si fueron modificados
         private float initialMasterVolume;
@@ -47,6 +49,9 @@ namespace App.Game.Managers {
         private float initialSFXVolume;
         private float initialAtmosphereVolume;
         private float initialVoiceVolume;
+
+        // TODO: Adapt to create a class holding Settings Data to better buffering and compare it without PlayerPrefs
+
         // TODO: Move UI related updates to UIManager for handling it
         // TODO: Add events to update signals among visual updaters
 
@@ -66,12 +71,11 @@ namespace App.Game.Managers {
         }
 
         private void Awake() {
-            this.RouterManager = GameObject.Find("Managers").GetComponent<_RouterManager>();   
+            this.RouterManager = GameObject.Find("Managers").GetComponentInChildren<_RouterManager>();   
         }
 
         private void Start() {
             this.InitialUpdate(); // ! TEMP
-            this.LoadPreviousSettings();
         }
 
     // ? CUSTOM METHODS=============================================================================================================================
@@ -102,11 +106,13 @@ namespace App.Game.Managers {
         }
 
         private void LoadPreviousSettings() {
+            // ! This resets and maintains volume to 0.5f forced
+
             //Loading all volume channels configs from previous sessions
             this.masterVolumeSlider.value = PlayerPrefs.GetFloat("previousMasterVolume", 0.5f);
             this.musicVolumeSlider.value = PlayerPrefs.GetFloat("previousMusicVolume", 0.5f);
-            this.sfxVolumeSlider.value = PlayerPrefs.GetFloat("previousSFXVolume", 0.5f);
             this.uiVolumeSlider.value = PlayerPrefs.GetFloat("previousUIVolume", 0.5f);
+            this.sfxVolumeSlider.value = PlayerPrefs.GetFloat("previousSFXVolume", 0.5f);
             this.atmosphereVolumeSlider.value = PlayerPrefs.GetFloat("previousAtmosphereVolume", 0.5f);
             this.voiceVolumeSlider.value = PlayerPrefs.GetFloat("previousVoiceVolume", 0.5f);
 
@@ -124,7 +130,7 @@ namespace App.Game.Managers {
             this.initialUIVolume = this.uiVolumeSlider.value;
             this.initialAtmosphereVolume = this.atmosphereVolumeSlider.value;
             this.initialVoiceVolume = this.voiceVolumeSlider.value;
-            
+
             this.ChangesMade();
         }
         
@@ -134,14 +140,17 @@ namespace App.Game.Managers {
             this.mainMenuButton.SetActive(PlayerPrefs.GetInt("InGame", 0) == 1);
             this.restartGameButton.SetActive(PlayerPrefs.GetInt("InGame", 0) == 1);
             this.confirmationPromt.SetActive(false);
+            
+            //Pending to allow visual update OnSettingsOppened using UIManager
+            this.LoadPreviousSettings();
         }
         
         private bool SettingsChanged() {
             return !(
                 Mathf.Approximately(this.masterVolumeSlider.value, this.initialMasterVolume) &&
                 Mathf.Approximately(this.musicVolumeSlider.value, this.initialMusicVolume) &&
-                Mathf.Approximately(this.sfxVolumeSlider.value, this.initialSFXVolume) &&
                 Mathf.Approximately(this.uiVolumeSlider.value, this.initialUIVolume) &&
+                Mathf.Approximately(this.sfxVolumeSlider.value, this.initialSFXVolume) &&
                 Mathf.Approximately(this.atmosphereVolumeSlider.value, this.initialAtmosphereVolume) &&
                 Mathf.Approximately(this.voiceVolumeSlider.value, this.initialVoiceVolume)
             );
@@ -149,7 +158,7 @@ namespace App.Game.Managers {
 
         private void ApplySettings() {
             this.SaveNewDefaults();
-
+            
             PlayerPrefs.Save();
         }
         
@@ -173,18 +182,18 @@ namespace App.Game.Managers {
                 default:
                 case MenuAction.none:
                     this.LoadPreviousSettings();
-                    this.RouterManager.ToggleSettings();
+                    Events.Settings.OnSettingsToggled?.Invoke();
                 break;
                 case MenuAction.menu:
                     this.LoadPreviousSettings();
-                    this.RouterManager.ToggleSettings();
                     if (this.nextAction == MenuAction.menu) PlayerPrefs.SetInt("InGame", 0);
-                    this.RouterManager.ChangeScene(this.RouterManager.menuLoaderSceneBuildIndex);
+                    Events.Settings.OnSettingsToggled?.Invoke();
+                    Events.Application.OnNewGameSession?.Invoke();
                 break;
                 case MenuAction.retry:
                     this.LoadPreviousSettings();
-                    this.RouterManager.ToggleSettings();
-                    this.RouterManager.GameStart();
+                    Events.Settings.OnSettingsToggled?.Invoke();
+                    Events.Application.OnNewGameSession?.Invoke();
                 break;
                 case MenuAction.defaults:
                     this.ResetFactorySettings();
