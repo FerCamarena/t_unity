@@ -7,9 +7,10 @@ namespace App.Game.Managers {
     [SerializeField] private bool DEBUG = false;
 
     // ? PARAMETERS=================================================================================================================================
+        public _SavesManager SavesManager;
+        public _UIManager UIManager;
         public _RouterManager RouterManager;
         public _AudioManager AudioManager;
-        public _UIManager UIManager;
 
     // ? BASE METHODS===============================================================================================================================
         public static _AppManager Instance { get; private set; }
@@ -31,6 +32,24 @@ namespace App.Game.Managers {
 
     // ? CUSTOM METHODS=============================================================================================================================
         private void InitializeManagers() {
+            if (this.SavesManager == null) {
+                this.SavesManager = GetComponentInChildren<_SavesManager>(true);
+
+                if (this.SavesManager == null) {
+                    var savesManagerPrefab = Resources.Load<GameObject>("SavesManager");
+                    this.SavesManager = Instantiate(savesManagerPrefab, this.transform).GetComponent<_SavesManager>();
+                }
+            }
+
+            if (this.UIManager == null) {
+                this.UIManager = GetComponentInChildren<_UIManager>(true);
+
+                if (this.UIManager == null) {
+                    var uiManagerPrefab = Resources.Load<GameObject>("UIManager");
+                    this.UIManager = Instantiate(uiManagerPrefab, this.transform).GetComponent<_UIManager>();
+                }
+            }
+            
             if (this.RouterManager == null) {
                 this.RouterManager = GetComponentInChildren<_RouterManager>(true);
                 if (this.RouterManager == null) {
@@ -45,15 +64,6 @@ namespace App.Game.Managers {
                 if (this.AudioManager == null) {
                     var audioManagerPrefab = Resources.Load<GameObject>("AudioManager");
                     this.AudioManager = Instantiate(audioManagerPrefab, this.transform).GetComponent<_AudioManager>();
-                }
-            }
-
-            if (this.UIManager == null) {
-                this.UIManager = GetComponentInChildren<_UIManager>(true);
-
-                if (this.UIManager == null) {
-                    var uiManagerPrefab = Resources.Load<GameObject>("UIManager");
-                    this.UIManager = Instantiate(uiManagerPrefab, this.transform).GetComponent<_UIManager>();
                 }
             }
         }
