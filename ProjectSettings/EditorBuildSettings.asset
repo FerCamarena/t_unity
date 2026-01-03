@@ -6,16 +6,20 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/_Scenes/AppLoader.unity
+    guid: cbdd2c91b38fea04f95a98412d0ee155
+  - enabled: 1
+    path: Assets/_Scenes/Pause.unity
+    guid: b6d10d54c229d0d41bbc3134bc33da0d
+  - enabled: 1
     path: Assets/_Scenes/Menu.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
-    path: Assets/Scenes/Pause.unity
-    guid: 2eff7f24f090a6749b5817f8c5ca2382
-  - enabled: 1
-    path: Assets/Scenes/Default.unity
-    guid: 68dea2dc6638f3b4492ecbafe0c89179
+    path: Assets/_Scenes/Default.unity
+    guid: b24fe2fd584a5064c8251d6ead9fd418
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: f3d2fe0bafb1e31488acb6db11dfa1b5, type: 2}
+    com.unity.addressableassets: {fileID: 11400000, guid: b8c187f4f936ead4095f4de1dcd54855, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: f5365da44ab6da449b38ed69f0c2fe26, type: 2}
     com.unity.localization.settings: {fileID: 11400000, guid: 9e2a1b0f763a31b45a580619c78f48be, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: b679fb554fa7e0643a6e3c00754de8c4, type: 2}

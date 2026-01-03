@@ -1,0 +1,20 @@
+fileFormatVersion: 2
+guid: f2be9fdef93c7e04d80c3d2d1ecf164f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - appManagerPrefab: {fileID: 9125321634561519781, guid: 214e21c554e480d43b41595b92aec1af, type: 3}
+  - savesManagerPrefab: {fileID: 3251631625963367022, guid: ff729bf09e5ac2b4f8844ba2338f393b, type: 3}
+  - uiManagerPrefab: {fileID: 218827458752930336, guid: a462c99bc87e14c46bb477a1ff7e040e, type: 3}
+  - routerManagerPrefab: {fileID: 1871855682443309355, guid: 21e8cc4fe57e5514392662ecc9df5430, type: 3}
+  - audioManagerPrefab: {fileID: 1167345121468407117, guid: bcf94c6060df42b428cefcbc8940d48b, type: 3}
+  - SavesManager: {instanceID: 0}
+  - UIManager: {instanceID: 0}
+  - RouterManager: {instanceID: 0}
+  - AudioManager: {instanceID: 0}
+  executionOrder: -6
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

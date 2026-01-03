@@ -248,7 +248,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.1
-  far clip plane: 10
+  far clip plane: 1
   field of view: 60
   orthographic: 1
   orthographic size: 8
@@ -296,7 +296,7 @@ GameObject:
   - component: {fileID: 527204933}
   - component: {fileID: 527204932}
   m_Layer: 0
-  m_Name: UI
+  m_Name: HUDUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
