@@ -44,5 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34ff8eb94b1904b4a8f29ed03cf33e09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DEBUG: 0
-  MasterMixer: {fileID: 24100000, guid: 2d3a24cc650a88c4b9c058becec723e0, type: 2}
+  masterMixer: {fileID: 24100000, guid: 2d3a24cc650a88c4b9c058becec723e0, type: 2}
+  sourcesPool: []

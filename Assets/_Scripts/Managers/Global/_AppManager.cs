@@ -1,10 +1,15 @@
+using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Utilities;
 
 namespace App.Game.Managers {
+    // TODO: Add loading animation
+    // TODO: Add press to start text prompt
     public class _AppManager : MonoBehaviour {
     // ? DEBUG======================================================================================================================================
-    [SerializeField] private bool DEBUG = false;
+    [SerializeField] private static bool DEBUG = false;
 
     // ? PARAMETERS=================================================================================================================================
         // * REFERENCES
@@ -13,14 +18,17 @@ namespace App.Game.Managers {
         [SerializeField] private GameObject uiManagerPrefab;
         [SerializeField] private GameObject routerManagerPrefab;
         [SerializeField] private GameObject audioManagerPrefab;
+
+        // * ATTRIBUTES
+        [SerializeField] private bool inputTimeout = true;
+        [SerializeField] private bool timeTimeout = false;
+        [SerializeField] private float timeoutSeconds = 1.0f;
         
         // * INTERNAL
         [SerializeField] private _SavesManager SavesManager;
         [SerializeField] private _UIManager UIManager;
         [SerializeField] private _RouterManager RouterManager;
         [SerializeField] private _AudioManager AudioManager;
-
-        // * ATTRIBUTES
 
     // ? BASE METHODS===============================================================================================================================
         public static _AppManager Instance { get; private set; }
@@ -34,6 +42,8 @@ namespace App.Game.Managers {
             DontDestroyOnLoad(this.gameObject);
 
             this.InitializeManagers();
+
+            if (!this.inputTimeout && !this.timeTimeout) Debug.LogWarning("Current menu load config only allows external events to continue. Is this intended?");
         }
 
         private void Start() {
@@ -75,26 +85,21 @@ namespace App.Game.Managers {
         }
 
         private IEnumerator DelayedLoad() {
-            // TODO: Add conditional logic to give option to wait after input or time
-            // Time based
-            //yield return new WaitForSeconds(3);
-            // Input based
-            /*
-            while (timer < timeoutSeconds) {
-                if (Input.anyKeyDown) {
-                    yield break; // Salir de la corrutina inmediatamente
-                }
+            float timer = 0.0f;
+            while (timer < this.timeoutSeconds) {
+                if (this.inputTimeout) InputSystem.onAnyButtonPress.CallOnce(ctrl => { timer = this.timeoutSeconds; });
+                if (this.timeTimeout) timer += Time.deltaTime;
 
-                timer += Time.deltaTime;
                 yield return null;
             }
-            */
+            
 
             //Default. A frame after
             yield return null;
 
             // TODO: Add logic to handle already started games or just load MainMenu
             // ! Also, this is a direct call and reference, may be better to load from events as OnAppLoaded/Resumed
+            // TODO: Adapt router to receive OnAppLoaded/Resumed events and remove strict calls
             this.RouterManager?.LoadMenu();
         }
 

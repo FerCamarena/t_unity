@@ -1,11 +1,10 @@
 using UnityEngine.SceneManagement;
-using UnityEngine.Audio;
 using UnityEngine;
 
 namespace App.Game.Managers {
     public class _RouterManager : MonoBehaviour {
     // ? DEBUG======================================================================================================================================
-    [SerializeField] private bool DEBUG = false;
+    [SerializeField] private static bool DEBUG = false;
 
     // ? PARAMETERS=================================================================================================================================
         // * REFERENCES

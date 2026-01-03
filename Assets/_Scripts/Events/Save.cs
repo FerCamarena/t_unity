@@ -1,3 +1,4 @@
+using App.Tools.Data;
 using System;
 
 namespace App.Events {
@@ -7,6 +8,7 @@ namespace App.Events {
         public static Action<string> OnGameSaved;
         public static Action<string> OnGameLoaded;
         public static Action<string> OnSaveDeleted;
+        public static Func<SettingsData> OnRequestCurrentSettings;
         //public static Action<string> OnAutoSaved;
         
         // * CLOUD

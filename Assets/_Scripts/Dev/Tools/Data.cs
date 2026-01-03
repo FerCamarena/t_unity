@@ -3,7 +3,7 @@
     using UnityEditor;
 
     namespace App.Tools {
-        public static class Data {
+        public static class Prefs {
             [MenuItem("Tools/DEV/Reset everything ")]
             public static void ResetEverything() {
                 //Deleting all data

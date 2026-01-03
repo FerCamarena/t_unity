@@ -1,37 +1,44 @@
-using UnityEngine.UI;
 using UnityEngine;
 
-namespace App.Game.UI {
-    public class UpdatableUISlider : Slider, IUpdatableUI<Slider> {
+namespace App.Game.UI.Custom {
+    public class ContinueButton : UpdatableUIButton {
     // ? DEBUG======================================================================================================================================
-    [SerializeField] private bool DEBUG = false;
 
     // ? PARAMETERS=================================================================================================================================
         // * REFERENCES
         
-        // * INTERNAL
-        public string ElementID => this.GetInstanceID().ToString();
-        Component IUpdatableUI.Target => this;
-        public Slider Target => this;
-        
         // * ATTRIBUTES
+        
+        // * INTERNAL
+        [SerializeField] private bool enable = false;
+
     // ? BASE METHODS===============================================================================================================================
+        // * Currently managing independent and self Button suscription since Main Menu scene only requires a single GameObject sync update.
         protected override void OnEnable() {
+            if (DEBUG) Debug.Log("Suscribe specific requested of : " + this.GetInstanceID() + ", as SyncType: " + this.SyncType.ToString());
             Events.UI.SubscribeUpdatableUIElement?.Invoke(this.SyncType, this);
             
             base.OnEnable();
         }
 
+        // * Currently managing independent and self Button unsuscription since Main Menu scene only requires a single GameObject sync update.
         protected override void OnDisable() {
-             Events.UI.UnsubscribeUpdatableUIElement?.Invoke(this.SyncType, this);
+            if (DEBUG) Debug.Log("Unsuscribe specific requested of: " + this.GetInstanceID() + ", as SyncType: " + this.SyncType.ToString());
+            Events.UI.UnsubscribeUpdatableUIElement?.Invoke(this.SyncType, this);
 
             base.OnDisable();
         }
 
     // ? CUSTOM METHODS=============================================================================================================================
-        public SyncType SyncType => SyncType.slider;
-        public virtual void SyncUI() {}
+        public override void SyncUI() {
+            //TODO: Update to use SavesManager info
+            // this.interactable = SavesManager.HasSave(); *example application
+            this.interactable = this.enable; 
+
+            base.SyncUI();   
+        }
 
     // ? EVENT METHODS==============================================================================================================================
+    
     }
 }

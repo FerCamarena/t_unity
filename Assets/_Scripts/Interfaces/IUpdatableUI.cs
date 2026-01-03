@@ -6,7 +6,7 @@ namespace App.Game.UI {
         // * REFERENCES
         
         // * INTERNAL
-        string ElementID { get; }
+        int ElementID { get; }
         Component Target { get; }
         
         // * ATTRIBUTES
