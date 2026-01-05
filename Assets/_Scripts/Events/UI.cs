@@ -1,23 +1,28 @@
-using System.Collections.Generic;
-using UnityEngine;
 using System;
 
 namespace App.Events {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class UI {
         // * SUBSCRIPTION
-        public static Action<SyncType, Game.UI.IUpdatableUI> SubscribeUpdatableUIElement;
-        public static Action<SyncType, Game.UI.IUpdatableUI> UnsubscribeUpdatableUIElement;
+        /// <summary>
+        /// 
+        /// </summary>
+        public static Action<App.Tools.Data.SyncCategory, App.Game.UI.IUpdatableUI> SubscribeUpdatableUIElement;
+        /// <summary>
+        /// 
+        /// </summary>
+        public static Action<App.Tools.Data.SyncCategory, App.Game.UI.IUpdatableUI> UnsubscribeUpdatableUIElement;
         
         // * REQUESTS
-        public static Action<SyncType> OnSyncGroupRequested;
-        public static Action<SyncType, int> OnSyncElementRequested; 
+        /// <summary>
+        /// 
+        /// </summary>
+        public static Action<App.Tools.Data.SyncCategory> OnSyncGroupRequested;
+        /// <summary>
+        /// 
+        /// </summary>
+        public static Action<App.Tools.Data.SyncCategory, int> OnSyncElementRequested; 
     }
-}
-
-public enum SyncType {
-    slider,
-    button,
-    toggle,
-    image,
-    text
 }

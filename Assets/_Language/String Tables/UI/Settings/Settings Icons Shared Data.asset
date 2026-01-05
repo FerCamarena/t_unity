@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Settings Icons Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: Settings Icons
+  m_TableCollectionNameGuidString: 52905137ea733244083042ffad9ed924
+  m_Entries:
+  - m_Id: 12632207687680
+    m_Key: lang-flag_img_txt
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items:
+    - rid: 4467807378424201220
+  m_KeyGenerator:
+    rid: 4467807376731275275
+  references:
+    version: 2
+    RefIds:
+    - rid: 4467807376731275275
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1765042505470
+    - rid: 4467807378424201220
+      type: {class: AssetTypeMetadata, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries:
+        - m_KeyId: 12632207687680
+          m_TableCodes:
+          - EN
+          - JA
+          - MX
+        m_TypeString: UnityEngine.Sprite, UnityEngine.CoreModule, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null

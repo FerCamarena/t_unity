@@ -1,27 +1,37 @@
 using UnityEngine;
 
-namespace App.Tools {
+namespace Dev {
+    /// <summary>
+    /// 
+    /// </summary>
     public static class Audio {
         /// <summary>
-        /// Convierte un valor lineal a decibelios (escala de -80dB a 0dB).
+        /// 
         /// </summary>
-        public static float LinearToDecibel(float linear) => linear <= 0.0001f ? -80f : Mathf.Log10(linear) * 20f;
+        /// <param name="linear"></param>
+        /// <returns></returns>
+        public static float LinearToDecibel(float linear) => linear <= 0.0f ? -80.0f : Mathf.Log10(linear) * 20.0f;
 
         /// <summary>
-        /// Convierte un valor en decibelios a lineal (escala de 0.0001 a 1.0).
+        /// 
         /// </summary>
-        public static float DecibelToLinear(float dB) => Mathf.Pow(10f, dB / 20f);
-    
-        public enum MixerChannel {
-            Master,
-            Music,
-            UI,
-            SFX,
-            Atmosphere,
-            Voice
-        }
-        
-        public static bool ApproximatelyEqual(Data.VolumesSnapshot a, Data.VolumesSnapshot b) {
+        /// <param name="dB"></param>
+        /// <returns></returns>
+        public static float DecibelToLinear(float dB) => dB <= -80.0f ? 0.0f : Mathf.Pow(10.0f, dB / 20.0f);
+    }
+}
+
+namespace App.Tools {
+    /// <summary>
+    /// 
+    /// </summary>
+    public static class Audio {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        public static bool ApproximatelyEqual(App.Tools.Data.VolumesSnapshot a, App.Tools.Data.VolumesSnapshot b) {
             return Mathf.Approximately(a.masterVolume, b.masterVolume)
                 && Mathf.Approximately(a.musicVolume, b.musicVolume)
                 && Mathf.Approximately(a.uiVolume, b.uiVolume)
