@@ -6,7 +6,7 @@ using System;
 namespace App.Game.Managers {
     public class _UIManager : MonoBehaviour {
     // ? DEBUG======================================================================================================================================
-    [SerializeField] private bool DEBUG = false;
+    [SerializeField] private static bool DEBUG = false;
 
     // ? PARAMETERS=================================================================================================================================
         // * REFERENCES
@@ -47,10 +47,12 @@ namespace App.Game.Managers {
     // ? EVENT METHODS==============================================================================================================================
 
         public static void Register(SyncType type, IUpdatableUI element) {
+            if (DEBUG) Debug.Log("Suscribe specific requested of: " + element + ", as: " + type.ToString());
+
+            //Preventing assignations on empty
             if (!registry.ContainsKey(type)) registry[type] = new Dictionary<int, IUpdatableUI>();
 
-            Debug.Log("reg" + type.ToString() + element.Target.name + element.Target.GetInstanceID());
-
+            if (DEBUG) Debug.Log("Sync specific processed" + element.Target.GetInstanceID() + ", as: " + type.ToString());
             int id = element.Target.GetInstanceID();
             registry[type][id] = element;
         }
@@ -62,7 +64,8 @@ namespace App.Game.Managers {
         }
 
         private void SyncSpecific(SyncType type, int id) {
-            if (registry.TryGetValue(type, out var elements) && elements.TryGetValue(id, out var element)) {
+            if (registry.TryGetValue(type, out Dictionary<int, IUpdatableUI> elements) && elements.TryGetValue(id, out IUpdatableUI element)) {
+                if (DEBUG) Debug.Log("Sync specific correctly found in registry");
                 element.SyncUI();
             }
         }

@@ -1,6 +1,6 @@
 //Libraries
 using System.Collections;
-using UnityEngine.Audio;
+using App.Tools.Data;
 using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
@@ -13,7 +13,6 @@ namespace App.Game.Managers {
 
     // ? PARAMETERS=================================================================================================================================
         // * RERERENCES
-        [SerializeField] private _RouterManager RouterManager;
         [SerializeField] private GameObject localEventSystem;
         [SerializeField] private GameObject mainMenuButton;
         [SerializeField] private GameObject restartGameButton;
@@ -35,22 +34,13 @@ namespace App.Game.Managers {
         [SerializeField] private TMP_Dropdown languageDropdown;
         [SerializeField] private Coroutine userConfirmCoroutine;
 
+        // * ATTRIBUTES
+
         // * INTERNAL
         [SerializeField] private MenuAction nextAction = 0;
         [SerializeField] private bool isActionConfirmed = false;
-
-        // * ATTRIBUTES
-
-        // ! temp
-        // NUEVO: Almacena los valores de inicio para saber si fueron modificados
-        private float initialMasterVolume;
-        private float initialMusicVolume;
-        private float initialUIVolume;
-        private float initialSFXVolume;
-        private float initialAtmosphereVolume;
-        private float initialVoiceVolume;
-
-        // TODO: Adapt to create a class holding Settings Data to better buffering and compare it without PlayerPrefs
+        [SerializeField] private bool promptDeclined = false;
+        private VolumesSnapshot initialVolumes;
 
         // TODO: Move UI related updates to UIManager for handling it
         // TODO: Add events to update signals among visual updaters
@@ -59,19 +49,16 @@ namespace App.Game.Managers {
         // TODO: Add multiple debug, warning and error handling conditionals
 
         // TODO: Use Mathf to approximatelly 0 results
-        // TODO: Implement logaritmic adjustment to sliders from 0-1 values
         // TODO: Update scene references to use enum 
     // ? BASE METHODS===============================================================================================================================
         private void OnEnable() {
             Events.Settings.OnSettingsChanged += this.ChangesMade;
+            Events.Settings.OnVolumesChanged += this.ChangeVolumes;
         }
         
         private void OnDisable() {
             Events.Settings.OnSettingsChanged -= this.ChangesMade;
-        }
-
-        private void Awake() {
-            this.RouterManager = GameObject.Find("Managers").GetComponentInChildren<_RouterManager>();   
+            Events.Settings.OnVolumesChanged -= this.ChangeVolumes;
         }
 
         private void Start() {
@@ -79,42 +66,69 @@ namespace App.Game.Managers {
         }
 
     // ? CUSTOM METHODS=============================================================================================================================
+        private void InitialUpdate() {
+            this.localEventSystem.SetActive(PlayerPrefs.GetInt("SettingsOpen", 0) == 0); // * DEV: Forces single event system
+
+            this.mainMenuButton.SetActive(PlayerPrefs.GetInt("InGame", 0) == 1);
+            this.restartGameButton.SetActive(PlayerPrefs.GetInt("InGame", 0) == 1);
+            this.confirmationPromt.SetActive(false);
+                        
+            var snapshot = Events.Audio.OnRequestVolumes?.Invoke() ?? new VolumesSnapshot(1.0f);
+
+            this.ApplySnapshotToUI(snapshot);
+            this.SaveNewDefaults();
+            this.ChangesMade();
+        }
+        
+        private void ApplySnapshotToUI(VolumesSnapshot snapshot) {
+            // TODO: Update to allow each slider update itself if (event.received != this.current)
+            // TODO: Also, enable apply button check if (saves.stored != event.received)
+            this.masterVolumeSlider.value = snapshot.masterVolume;
+            this.musicVolumeSlider.value = snapshot.musicVolume;
+            this.uiVolumeSlider.value = snapshot.uiVolume;
+            this.sfxVolumeSlider.value = snapshot.sfxVolume;
+            this.atmosphereVolumeSlider.value = snapshot.atmosphereVolume;
+            this.voiceVolumeSlider.value = snapshot.voiceVolume;
+        }
+
         private void ChangesMade() {
-            this.applyButton.interactable = this.SettingsChanged();
+            this.applyButton.interactable = this.CompareSettings();
+        }
+
+        private bool CompareSettings() {
+            VolumesSnapshot current = new VolumesSnapshot {
+                masterVolume = masterVolumeSlider.value,
+                musicVolume = musicVolumeSlider.value,
+                uiVolume = uiVolumeSlider.value,
+                sfxVolume = sfxVolumeSlider.value,
+                atmosphereVolume = atmosphereVolumeSlider.value,
+                voiceVolume = voiceVolumeSlider.value
+            };
+
+            return !Tools.Audio.ApproximatelyEqual(current, initialVolumes);
+        }
+
+        private void ChangeVolumes(VolumesSnapshot snapshot) {
+            this.ApplySnapshotToUI(snapshot);
         }
 
         private void ResetFactorySettings() {
-            //Loading all factory volume config
-            this.masterVolumeSlider.value = 0.5f;
-            this.musicVolumeSlider.value = 0.5f;
-            this.uiVolumeSlider.value = 0.5f;
-            this.sfxVolumeSlider.value = 0.5f;
-            this.atmosphereVolumeSlider.value = 0.5f;
-            this.voiceVolumeSlider.value = 0.5f;
+            if (DEBUG) Debug.Log("ResetFactorySettings()");
 
-            
-            PlayerPrefs.SetFloat("previousMasterVolume", this.masterVolumeSlider.value);
-            PlayerPrefs.SetFloat("previousMusicVolume", this.musicVolumeSlider.value);
-            PlayerPrefs.SetFloat("previousUIVolume", this.uiVolumeSlider.value);
-            PlayerPrefs.SetFloat("previousSFXVolume", this.sfxVolumeSlider.value);
-            PlayerPrefs.SetFloat("previousAtmosphereVolume", this.atmosphereVolumeSlider.value);
-            PlayerPrefs.SetFloat("previousVoiceVolume", this.voiceVolumeSlider.value);
+            var defaults = new VolumesSnapshot(1.0f);
+            this.ApplySnapshotToUI(defaults);
 
-            // TODO: Loading all factory accesibility config
-            //qualityDropdown.value = PlayerPrefs.GetInt("qualityIndex", 0);
-            //languageDropdown.value = PlayerPrefs.GetInt("languageIndex", 0);
+            Events.Settings.OnSettingsChanged?.Invoke();
         }
 
         private void LoadPreviousSettings() {
             // ! This resets and maintains volume to 0.5f forced
 
             //Loading all volume channels configs from previous sessions
-            this.masterVolumeSlider.value = PlayerPrefs.GetFloat("previousMasterVolume", 0.5f);
-            this.musicVolumeSlider.value = PlayerPrefs.GetFloat("previousMusicVolume", 0.5f);
-            this.uiVolumeSlider.value = PlayerPrefs.GetFloat("previousUIVolume", 0.5f);
-            this.sfxVolumeSlider.value = PlayerPrefs.GetFloat("previousSFXVolume", 0.5f);
-            this.atmosphereVolumeSlider.value = PlayerPrefs.GetFloat("previousAtmosphereVolume", 0.5f);
-            this.voiceVolumeSlider.value = PlayerPrefs.GetFloat("previousVoiceVolume", 0.5f);
+            this.ApplySnapshotToUI(initialVolumes);
+
+            //Duplicated since updating UI calls each channel UpdateXVolume event and Start of app in AudioManager
+            //Events.Audio.OnApplyVolumes?.Invoke(initialVolumes);
 
             // TODO: Loading all accesibility configs from previous settings
             //qualityDropdown.value = PlayerPrefs.GetInt("qualityIndex", 0);
@@ -122,86 +136,50 @@ namespace App.Game.Managers {
 
             this.SaveNewDefaults();
         }
-
+        
         private void SaveNewDefaults() {
-            this.initialMasterVolume = this.masterVolumeSlider.value;
-            this.initialMusicVolume = this.musicVolumeSlider.value;
-            this.initialSFXVolume = this.sfxVolumeSlider.value;
-            this.initialUIVolume = this.uiVolumeSlider.value;
-            this.initialAtmosphereVolume = this.atmosphereVolumeSlider.value;
-            this.initialVoiceVolume = this.voiceVolumeSlider.value;
-
-            this.ChangesMade();
-        }
-        
-        private void InitialUpdate() {
-            this.localEventSystem.SetActive(PlayerPrefs.GetInt("SettingsOpen", 0) == 0); // * DEV: Forces single event system
-
-            this.mainMenuButton.SetActive(PlayerPrefs.GetInt("InGame", 0) == 1);
-            this.restartGameButton.SetActive(PlayerPrefs.GetInt("InGame", 0) == 1);
-            this.confirmationPromt.SetActive(false);
-            
-            //Pending to allow visual update OnSettingsOppened using UIManager
-            this.LoadPreviousSettings();
-        }
-        
-        private bool SettingsChanged() {
-            return !(
-                Mathf.Approximately(this.masterVolumeSlider.value, this.initialMasterVolume) &&
-                Mathf.Approximately(this.musicVolumeSlider.value, this.initialMusicVolume) &&
-                Mathf.Approximately(this.uiVolumeSlider.value, this.initialUIVolume) &&
-                Mathf.Approximately(this.sfxVolumeSlider.value, this.initialSFXVolume) &&
-                Mathf.Approximately(this.atmosphereVolumeSlider.value, this.initialAtmosphereVolume) &&
-                Mathf.Approximately(this.voiceVolumeSlider.value, this.initialVoiceVolume)
-            );
-        }
-
-        private void ApplySettings() {
-            this.SaveNewDefaults();
-            
-            PlayerPrefs.Save();
-        }
-        
-        private bool NeedsConfirmation(MenuAction action) {
-            switch (action) {
-                case MenuAction.menu:
-                case MenuAction.retry:
-                    return true;
-                case MenuAction.defaults:
-                case MenuAction.none:
-                    return this.SettingsChanged();
-                default:
-                    return false;
-            }
+            this.initialVolumes = new VolumesSnapshot {
+                masterVolume = masterVolumeSlider.value,
+                musicVolume = musicVolumeSlider.value,
+                uiVolume = uiVolumeSlider.value,
+                sfxVolume = sfxVolumeSlider.value,
+                atmosphereVolume = atmosphereVolumeSlider.value,
+                voiceVolume = voiceVolumeSlider.value
+            };
         }
 
         private IEnumerator WaitUserConfirmation() {
             while (!this.isActionConfirmed) yield return null;
             
-            switch (this.nextAction) {
-                default:
-                case MenuAction.none:
-                    this.LoadPreviousSettings();
-                    Events.Settings.OnSettingsToggled?.Invoke();
-                break;
-                case MenuAction.menu:
-                    this.LoadPreviousSettings();
-                    if (this.nextAction == MenuAction.menu) PlayerPrefs.SetInt("InGame", 0);
-                    Events.Settings.OnSettingsToggled?.Invoke();
-                    Events.Application.OnNewGameSession?.Invoke();
-                break;
-                case MenuAction.retry:
-                    this.LoadPreviousSettings();
-                    Events.Settings.OnSettingsToggled?.Invoke();
-                    Events.Application.OnNewGameSession?.Invoke();
-                break;
-                case MenuAction.defaults:
-                    this.ResetFactorySettings();
-                break;
+            if (!this.promptDeclined) {
+                switch (this.nextAction) {
+                    case MenuAction.none:
+                        this.LoadPreviousSettings();
+                        Events.Settings.OnSettingsToggled?.Invoke();
+                    break;
+                    case MenuAction.menu:
+                        this.LoadPreviousSettings();
+                        PlayerPrefs.SetInt("InGame", 0);
+                        Events.Settings.OnSettingsToggled?.Invoke();
+                        Events.Application.OnNewGameSession?.Invoke();
+                    break;
+                    case MenuAction.retry:
+                        this.LoadPreviousSettings();
+                        Events.Settings.OnSettingsToggled?.Invoke();
+                        Events.Application.OnNewGameSession?.Invoke();
+                    break;
+                    case MenuAction.defaults:
+                        this.ResetFactorySettings();
+                    break;
+                }
             }
             
             Time.timeScale = 1.0f;
             
+            this.nextAction = MenuAction.none;
+            this.isActionConfirmed = false;
+            this.promptDeclined = false;
+    
             if (this.userConfirmCoroutine != null) {
                 this.StopCoroutine(this.userConfirmCoroutine);
                 this.userConfirmCoroutine = null;
@@ -209,7 +187,16 @@ namespace App.Game.Managers {
         }
 
     // ? EVENT METHODS==============================================================================================================================
-        private void UpdateQualityIndex() {
+        public void ApplySettings() {
+            if (DEBUG) Debug.Log("ApplySettings pressed"); //temp
+
+            Events.Settings.OnSettingsSaved?.Invoke();
+
+            this.SaveNewDefaults();
+            this.ChangesMade();
+        }
+        
+        public void UpdateQualityIndex() {
             // TODO: Modify to allow real quality update dynamically
             QualitySettings.SetQualityLevel(this.qualityDropdown.value);
             PlayerPrefs.SetInt("qualityIndex", this.qualityDropdown.value);
@@ -218,7 +205,7 @@ namespace App.Game.Managers {
             Events.Settings.OnSettingsChanged?.Invoke();
         }
 
-        private void UpdateLanguageIndex() {
+        public void UpdateLanguageIndex() {
             // TODO: Modify to allow complete integration with Localization plugin
             PlayerPrefs.SetInt("languageIndex", this.languageDropdown.value);
 
@@ -227,7 +214,8 @@ namespace App.Game.Managers {
         }
 
         public void UpdateMasterVolume() {
-            PlayerPrefs.SetFloat("masterVolume", this.masterVolumeSlider.value);
+            //PlayerPrefs.SetFloat("masterVolume", this.masterVolumeSlider.value);
+            Events.Audio.OnApplyChannelVolume(Tools.Audio.MixerChannel.Master.ToString(), this.masterVolumeSlider.value);
 
             if (this.masterVolumeSlider.value == 0.0f) {
                 // Music
@@ -259,6 +247,7 @@ namespace App.Game.Managers {
                 //Forcing null channel volume
                 this.musicVolumeSlider.value = 0.0f;
                 this.uiVolumeSlider.value = 0.0f;
+                this.sfxVolumeSlider.value = 0.0f;
                 this.musicVolumeSlider.value = 0.0f;
                 this.atmosphereVolumeSlider.value = 0.0f;
                 this.voiceVolumeSlider.value = 0.0f;
@@ -348,7 +337,8 @@ namespace App.Game.Managers {
         }
 
         public void UpdateMusicVolume() {
-            PlayerPrefs.SetFloat("musicVolume", this.musicVolumeSlider.value);
+            //PlayerPrefs.SetFloat("musicVolume", this.musicVolumeSlider.value);
+            Events.Audio.OnApplyChannelVolume?.Invoke(Tools.Audio.MixerChannel.Music.ToString(), this.musicVolumeSlider.value);
             
             if (this.musicVolumeSlider.value > 0.0f && this.masterVolumeSlider.value == 0.0f) this.ToggleMasterVolume();
 
@@ -367,7 +357,8 @@ namespace App.Game.Managers {
         }
         
         public void UpdateUIVolume() {
-            PlayerPrefs.SetFloat("uiVolume", this.uiVolumeSlider.value);
+            //PlayerPrefs.SetFloat("uiVolume", this.uiVolumeSlider.value);
+            Events.Audio.OnApplyChannelVolume(Tools.Audio.MixerChannel.UI.ToString(), this.uiVolumeSlider.value);
 
             if (this.uiVolumeSlider.value > 0.0f && this.masterVolumeSlider.value == 0.0f) this.ToggleMasterVolume();
 
@@ -386,7 +377,8 @@ namespace App.Game.Managers {
         }
 
         public void UpdateSFXVolume() {
-            PlayerPrefs.SetFloat("sfxVolume", this.sfxVolumeSlider.value);
+            //PlayerPrefs.SetFloat("sfxVolume", this.sfxVolumeSlider.value);
+            Events.Audio.OnApplyChannelVolume(Tools.Audio.MixerChannel.SFX.ToString(), this.sfxVolumeSlider.value);
             
             if (this.sfxVolumeSlider.value > 0.0f && this.masterVolumeSlider.value == 0.0f) this.ToggleMasterVolume();
 
@@ -405,7 +397,8 @@ namespace App.Game.Managers {
         }
 
         public void UpdateAtmosphereVolume() {
-            PlayerPrefs.SetFloat("atmosphereVolume", this.atmosphereVolumeSlider.value);
+            //PlayerPrefs.SetFloat("atmosphereVolume", this.atmosphereVolumeSlider.value);
+            Events.Audio.OnApplyChannelVolume(Tools.Audio.MixerChannel.Atmosphere.ToString(), this.atmosphereVolumeSlider.value);
 
             if (this.atmosphereVolumeSlider.value > 0.0f && this.masterVolumeSlider.value == 0.0f) this.ToggleMasterVolume();
 
@@ -424,7 +417,8 @@ namespace App.Game.Managers {
         }
 
         public void UpdateVoiceVolume() {
-            PlayerPrefs.SetFloat("voiceVolume", this.voiceVolumeSlider.value);
+            //PlayerPrefs.SetFloat("voiceVolume", this.voiceVolumeSlider.value);
+            Events.Audio.OnApplyChannelVolume(Tools.Audio.MixerChannel.Voice.ToString(), this.voiceVolumeSlider.value);
 
             if (this.voiceVolumeSlider.value > 0.0f && this.masterVolumeSlider.value == 0.0f) this.ToggleMasterVolume();
 
@@ -444,8 +438,8 @@ namespace App.Game.Managers {
 
         public void ConfirmationPrompt(int actionIndex) {
             this.nextAction = (MenuAction)actionIndex;
+            bool shouldShow = this.NeedsConfirmation(this.nextAction);
 
-            bool shouldShow = NeedsConfirmation(this.nextAction);
             this.confirmationPromt.SetActive(shouldShow);
             this.isActionConfirmed = !shouldShow;
 
@@ -453,11 +447,25 @@ namespace App.Game.Managers {
             this.userConfirmCoroutine = this.StartCoroutine(this.WaitUserConfirmation());
         }
 
-        public void CompleteAction() {
-            this.isActionConfirmed = true;
+        private bool NeedsConfirmation(MenuAction action) {
+            switch (action) {
+                case MenuAction.menu:
+                case MenuAction.retry:
+                case MenuAction.defaults:
+                    return true;
+                case MenuAction.none:
+                default:
+                    return this.CompareSettings();
+            }
         }
 
+        public void CompleteAction() {
+            this.isActionConfirmed = true;
+            this.promptDeclined = false;
+        }
         public void DeclineAction() {
+            this.isActionConfirmed = true;
+            this.promptDeclined = true;
             this.nextAction = MenuAction.none;
             if (this.userConfirmCoroutine != null) this.StopCoroutine(this.userConfirmCoroutine);
         }

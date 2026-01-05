@@ -11,6 +11,7 @@ namespace App.Events {
         public static Action OnSettingsChanged;
         
         // * VOLUME
+        public static Action<Tools.Data.VolumesSnapshot> OnVolumesChanged;
         public static Action<float> OnMasterVolumeChanged;
         public static Action<float> OnMusicVolumeChanged;
         public static Action<float> OnUIVolumeChanged;
