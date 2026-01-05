@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4db626ad063b13545924a9839ac5fa83, type: 3}
+  m_Name: Settings Icons
+  m_EditorClassIdentifier: 
+  m_SharedTableData: {fileID: 11400000, guid: 52905137ea733244083042ffad9ed924, type: 2}
+  m_Tables:
+  - {fileID: 11400000, guid: ea31e76acb293944b9d9c7c2d780d011, type: 2}
+  - {fileID: 11400000, guid: a40498e2bd68d6c409f655b1eddd743f, type: 2}
+  - {fileID: 11400000, guid: c877c0873529fd94d8a72410314e53db, type: 2}
+  m_Extensions: []
+  m_Group: UI
+  references:
+    version: 2
+    RefIds: []

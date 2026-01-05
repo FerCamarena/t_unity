@@ -1,0 +1,120 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Menus Texts Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: Menus Texts
+  m_TableCollectionNameGuidString: 529881fd14c98c54799a7e55b1b3f90f
+  m_Entries:
+  - m_Id: 220100519034880
+    m_Key: accesibility_txt_header
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219578181386240
+    m_Key: apply_btn_label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219033316130816
+    m_Key: atmosphere_chl_label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 220443948646400
+    m_Key: confirm_btn_label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 220541961142272
+    m_Key: confirm_txt_header
+    m_Metadata:
+      m_Items: []
+  - m_Id: 220511531466752
+    m_Key: decline_btn_label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235623448576
+    m_Key: exit_btn_label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219382651322368
+    m_Key: language_dpd_label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218836485832704
+    m_Key: master_chl_label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219572602961920
+    m_Key: menu_btn_label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218920539684864
+    m_Key: music_chl_label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8090845184
+    m_Key: play_btn_label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 148608905150464
+    m_Key: press_txt_label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219287088300032
+    m_Key: quality_dpd_label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219633672028160
+    m_Key: restore_btn_label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 110729658368
+    m_Key: resume_btn_label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219417245941760
+    m_Key: retry_btn_label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219607533125632
+    m_Key: return_btn_label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 335477243904
+    m_Key: settings_btn_label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219004253798400
+    m_Key: sfx_chl_label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218956304515072
+    m_Key: ui_chl_label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219168808927232
+    m_Key: voice_chl_label
+    m_Metadata:
+      m_Items: []
+  - m_Id: 220170182230016
+    m_Key: volumes_txt_header
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 4467807331748937748
+  references:
+    version: 2
+    RefIds:
+    - rid: 4467807331748937748
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1764929394030

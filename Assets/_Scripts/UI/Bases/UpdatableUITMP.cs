@@ -1,25 +1,50 @@
-using UnityEngine.UI;
 using UnityEngine;
 using TMPro;
 
 namespace App.Game.UI {
+    /// <summary>
+    /// 
+    /// </summary>
     public class UpdatableUITPM : TextMeshProUGUI, IUpdatableUI<TextMeshProUGUI> {
     // ? DEBUG======================================================================================================================================
-    [SerializeField] protected bool DEBUG = false;
+        //[Header("Debug")]
+        /// <summary>
+        /// 
+        /// </summary>
+        protected bool DEBUG => false;
 
     // ? PARAMETERS=================================================================================================================================
         // * REFERENCES
+        //[Header("References")]
         
         // * ATTRIBUTES
-        
-        // * INTERNAL
+        //[Header("Attributes")]
+        /// <summary>
+        /// 
+        /// </summary>
+        [Tooltip("")]
         Component IUpdatableUI.Target => this;
-        public SyncType SyncType => SyncType.text;
+        /// <summary>
+        /// 
+        /// </summary>
+        [Tooltip("")]
         public TextMeshProUGUI Target => this;
+        /// <summary>
+        /// 
+        /// </summary>
+        [Tooltip("")]
+        public App.Tools.Data.SyncCategory SyncType => App.Tools.Data.SyncCategory.text;
+        /// <summary>
+        /// 
+        /// </summary>
+        [Tooltip("")]
         public int ElementID => this.GetInstanceID();
+        
+        // * INTERNALS
+        //[Header("Internals")]
 
     // ? BASE METHODS===============================================================================================================================
-        // * Snippet stored to correctly manage Button suscribe calls.
+        // * Snippet stored to correctly manage independent Button suscribe calls.
         // protected override void OnEnable() {
         //     if (DEBUG) Debug.Log("Suscribe specific requested of : " + this.GetInstanceID() + ", as SyncType: " + this.SyncType.ToString());
         //     Events.UI.SubscribeUpdatableUIElement?.Invoke(this.SyncType, this);
@@ -27,7 +52,7 @@ namespace App.Game.UI {
         //     base.OnEnable();
         // }
 
-        // * Snippet stored to correctly manage Button unsuscribe calls.
+        // * Snippet stored to correctly manage independent Button unsuscribe calls.
         // protected override void OnDisable() {
         //     if (DEBUG) Debug.Log("Unsuscribe specific requested of: " + this.GetInstanceID() + ", as SyncType: " + this.SyncType.ToString());
         //     Events.UI.UnsubscribeUpdatableUIElement?.Invoke(this.SyncType, this);
@@ -36,6 +61,9 @@ namespace App.Game.UI {
         // }
 
     // ? CUSTOM METHODS=============================================================================================================================
+        /// <summary>
+        /// 
+        /// </summary>
         public virtual void SyncUI() {
             if (DEBUG) Debug.Log("Sync specific processed on: " + this + ", type: " + this.SyncType.ToString());
         }

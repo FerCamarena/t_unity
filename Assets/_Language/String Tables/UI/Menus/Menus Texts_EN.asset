@@ -1,0 +1,115 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Menus Texts_EN
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: EN
+  m_SharedData: {fileID: 11400000, guid: 529881fd14c98c54799a7e55b1b3f90f, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 8090845184
+    m_Localized: Play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 110729658368
+    m_Localized: Resume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 235623448576
+    m_Localized: Quit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 335477243904
+    m_Localized: Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 148608905150464
+    m_Localized: PRESS ANY KEY TO START
+    m_Metadata:
+      m_Items: []
+  - m_Id: 220170182230016
+    m_Localized: Volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219578181386240
+    m_Localized: Apply
+    m_Metadata:
+      m_Items: []
+  - m_Id: 220100519034880
+    m_Localized: Accessibility
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219168808927232
+    m_Localized: Voice
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218956304515072
+    m_Localized: Interfaces
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219004253798400
+    m_Localized: Sound FX
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219607533125632
+    m_Localized: Return
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219417245941760
+    m_Localized: Retry
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219633672028160
+    m_Localized: Restore
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218920539684864
+    m_Localized: Music
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219382651322368
+    m_Localized: Language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218836485832704
+    m_Localized: Master
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219572602961920
+    m_Localized: Menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 220511531466752
+    m_Localized: Decline
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219287088300032
+    m_Localized: Quality
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219033316130816
+    m_Localized: Atmosphere
+    m_Metadata:
+      m_Items: []
+  - m_Id: 220443948646400
+    m_Localized: Confirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 220541961142272
+    m_Localized: Are you sure?
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []
