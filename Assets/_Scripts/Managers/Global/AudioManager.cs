@@ -15,7 +15,7 @@ namespace App.Managers {
         /// <summary>
         /// 
         /// </summary>
-        private static bool DEBUG => false;
+        [SerializeField] private bool DEBUG = false;
 
     // ? PARAMETERS=================================================================================================================================
         // * REFERENCES
@@ -72,6 +72,11 @@ namespace App.Managers {
         /// </summary>
         [Tooltip("")]
         [SerializeField] private App.Tools.Data.SoundClip menuSound;
+        /// <summary>
+        /// 
+        /// </summary>
+        [Tooltip("")]
+        [SerializeField] private App.Tools.Data.SoundClip soundTrack;
 
         // * INTERNALS
         [Header("Internals")]
@@ -96,6 +101,7 @@ namespace App.Managers {
             App.Events.Audio.OnStopAllUniversal += this.StopAllUniversal;
             
             App.Events.Application.OnAppOpened += this.LoadVolumeSettings;
+            App.Events.Application.OnAppOpened += this.StartPlayingSoundtrack;
         }
         
         /// <summary>
@@ -112,6 +118,7 @@ namespace App.Managers {
             App.Events.Audio.OnStopAllUniversal -= this.StopAllUniversal;
             
             App.Events.Application.OnAppOpened -= this.LoadVolumeSettings;
+            App.Events.Application.OnAppOpened -= this.StartPlayingSoundtrack;
         }
 
         /// <summary>
@@ -133,10 +140,7 @@ namespace App.Managers {
         /// <summary>
         /// 
         /// </summary>
-        private void Start() {
-            // TODO: Update to handle calls from local managers to implement its own scene sound or request transitions
-            if (this.menuSound != null && SceneManager.GetActiveScene().buildIndex == 0) this.PlayUniversalClip(this.menuSound);
-        }
+        // private void Start() {}
 
         /// <summary>
         /// 
@@ -380,6 +384,14 @@ namespace App.Managers {
             foreach (var kvp in this.universalRegistry) kvp.Value.Stop();
 
             this.universalRegistry.Clear();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void StartPlayingSoundtrack() {
+            if(this.DEBUG) Debug.Log("[AM] Start playing SoundTrack.");
+            this.PlayUniversalClip(this.soundTrack);
         }
     }
 }

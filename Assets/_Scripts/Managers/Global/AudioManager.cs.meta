@@ -4,7 +4,15 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - MasterMixer: {fileID: 24100000, guid: 2d3a24cc650a88c4b9c058becec723e0, type: 2}
+  - masterMixer: {fileID: 24100000, guid: 2d3a24cc650a88c4b9c058becec723e0, type: 2}
+  - masterGroup: {fileID: 24300002, guid: 2d3a24cc650a88c4b9c058becec723e0, type: 2}
+  - musicGroup: {fileID: -4242904963358755645, guid: 2d3a24cc650a88c4b9c058becec723e0, type: 2}
+  - uiGroup: {fileID: 6634672136275948367, guid: 2d3a24cc650a88c4b9c058becec723e0, type: 2}
+  - sfxGroup: {fileID: -2874609106016141167, guid: 2d3a24cc650a88c4b9c058becec723e0, type: 2}
+  - atmosphereGroup: {fileID: 3120517449489683741, guid: 2d3a24cc650a88c4b9c058becec723e0, type: 2}
+  - voiceGroup: {fileID: 2167701945420361514, guid: 2d3a24cc650a88c4b9c058becec723e0, type: 2}
+  - menuSound: {fileID: 11400000, guid: f7bd24606f151974f9634acb0d0c29bf, type: 2}
+  - soundTrack: {fileID: 11400000, guid: 0a43c7f5bcf96be4392768575f63ea41, type: 2}
   executionOrder: -2
   icon: {instanceID: 0}
   userData: 

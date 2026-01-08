@@ -46,10 +46,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   masterMixer: {fileID: 24100000, guid: 2d3a24cc650a88c4b9c058becec723e0, type: 2}
   masterGroup: {fileID: 24300002, guid: 2d3a24cc650a88c4b9c058becec723e0, type: 2}
-  musicGroup: {fileID: 24300002, guid: 8c73dd2d6229ea543a6edbd323d855ba, type: 2}
-  uiGroup: {fileID: 24300002, guid: 46ac87c4136eeda469386e07858ddc05, type: 2}
-  sfxGroup: {fileID: 24300002, guid: 8c8b1faf019d51745a70fd5ec8eb2d21, type: 2}
-  atmosphereGroup: {fileID: 24300002, guid: 9e1207cd0bf1bbb429750a38e5212a0d, type: 2}
-  voiceGroup: {fileID: 24300002, guid: 83683e6dacd662742860f184a04c679c, type: 2}
+  musicGroup: {fileID: -4242904963358755645, guid: 2d3a24cc650a88c4b9c058becec723e0, type: 2}
+  uiGroup: {fileID: 6634672136275948367, guid: 2d3a24cc650a88c4b9c058becec723e0, type: 2}
+  sfxGroup: {fileID: -2874609106016141167, guid: 2d3a24cc650a88c4b9c058becec723e0, type: 2}
+  atmosphereGroup: {fileID: 3120517449489683741, guid: 2d3a24cc650a88c4b9c058becec723e0, type: 2}
+  voiceGroup: {fileID: 2167701945420361514, guid: 2d3a24cc650a88c4b9c058becec723e0, type: 2}
   sourcesPool: []
-  menuSound: {fileID: 0}
+  menuSound: {fileID: 11400000, guid: f7bd24606f151974f9634acb0d0c29bf, type: 2}
+  soundTrack: {fileID: 11400000, guid: 0a43c7f5bcf96be4392768575f63ea41, type: 2}
