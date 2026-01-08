@@ -191,13 +191,13 @@ namespace App.Managers {
             
             //Loading global managers
             // TODO: Evolve to Service Locator pattern later
-            this.ArquitecturalLoad();
+            this.ArchitecturalLoad();
         }
         
         /// <summary>
         /// 
         /// </summary>
-        private void ArquitecturalLoad() {
+        private void ArchitecturalLoad() {
             if (this.savesManager == null) {
                 this.savesManager = GetComponentInChildren<SavesManager>(true);
 

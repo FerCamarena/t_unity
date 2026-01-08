@@ -845,7 +845,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   continueButton: {fileID: 594510294}
   flagIcon: {fileID: 1620530271}
-  uiClickSound: {fileID: 0}
+  uiClickSound: {fileID: 11400000, guid: f7bd24606f151974f9634acb0d0c29bf, type: 2}
+  soundTrack: {fileID: 11400000, guid: 92fef2b0e66ee224390aa07a34cf9372, type: 2}
 --- !u!1 &594510287
 GameObject:
   m_ObjectHideFlags: 0
