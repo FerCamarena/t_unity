@@ -36,6 +36,10 @@ namespace App.Game.Managers {
         /// </summary>
         [Tooltip("")]
         [SerializeField] private App.Tools.Data.SoundClip uiClickSound;
+        /// <summary>
+        /// 
+        /// </summary>
+        [SerializeField] private App.Tools.Data.SoundClip soundTrack;
         
         // * INTERNALS
         //[Header("Internals")]
@@ -75,6 +79,8 @@ namespace App.Game.Managers {
         /// </summary>
         private void Start() {
             this.Initialize();
+
+            App.Events.Audio.OnPlayClipUniversally?.Invoke(soundTrack);
         }
 
         /// <summary>

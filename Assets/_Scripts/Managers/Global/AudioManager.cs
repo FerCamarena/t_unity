@@ -15,7 +15,7 @@ namespace App.Managers {
         /// <summary>
         /// 
         /// </summary>
-        private static bool DEBUG => false;
+        [SerializeField] private bool DEBUG = false;
 
     // ? PARAMETERS=================================================================================================================================
         // * REFERENCES
@@ -72,6 +72,11 @@ namespace App.Managers {
         /// </summary>
         [Tooltip("")]
         [SerializeField] private App.Tools.Data.SoundClip menuSound;
+        /// <summary>
+        /// 
+        /// </summary>
+        [Tooltip("")]
+        [SerializeField] private App.Tools.Data.SoundClip soundTrack;
 
         // * INTERNALS
         [Header("Internals")]
@@ -91,11 +96,12 @@ namespace App.Managers {
             App.Events.Audio.OnApplyVolumesSnapshot += this.SetVolumesSnapshot;
             App.Events.Audio.OnApplyChannelVolume += this.SetChannelVolume;
 
-            App.Events.Audio.OnPlayClipUniversally += this.PlayUniversalClip;
+            App.Events.Audio.OnPlayClipUniversally += this.TryPlayUniversal;
             App.Events.Audio.OnStopUniversalByTag += this.StopUniversalByTag;
             App.Events.Audio.OnStopAllUniversal += this.StopAllUniversal;
             
             App.Events.Application.OnAppOpened += this.LoadVolumeSettings;
+            App.Events.Application.OnAppOpened += this.StartPlayingSoundtrack;
         }
         
         /// <summary>
@@ -107,11 +113,12 @@ namespace App.Managers {
             App.Events.Audio.OnApplyVolumesSnapshot -= this.SetVolumesSnapshot;
             App.Events.Audio.OnApplyChannelVolume -= this.SetChannelVolume;
             
-            App.Events.Audio.OnPlayClipUniversally -= this.PlayUniversalClip;
+            App.Events.Audio.OnPlayClipUniversally -= this.TryPlayUniversal;
             App.Events.Audio.OnStopUniversalByTag -= this.StopUniversalByTag;
             App.Events.Audio.OnStopAllUniversal -= this.StopAllUniversal;
             
             App.Events.Application.OnAppOpened -= this.LoadVolumeSettings;
+            App.Events.Application.OnAppOpened -= this.StartPlayingSoundtrack;
         }
 
         /// <summary>
@@ -133,10 +140,7 @@ namespace App.Managers {
         /// <summary>
         /// 
         /// </summary>
-        private void Start() {
-            // TODO: Update to handle calls from local managers to implement its own scene sound or request transitions
-            if (this.menuSound != null && SceneManager.GetActiveScene().buildIndex == 0) this.PlayUniversalClip(this.menuSound);
-        }
+        // private void Start() {}
 
         /// <summary>
         /// 
@@ -309,11 +313,11 @@ namespace App.Managers {
         /// <returns></returns>
         private IEnumerator FadeOutAndStop(AudioSource source, float duration) {
             float startVol = source.volume;
-            float t = 0f;
+            float t = 0.0f;
 
             while (t < duration) {
                 t += Time.unscaledDeltaTime;
-                source.volume = Mathf.Lerp(startVol, 0f, t / duration);
+                source.volume = Mathf.Lerp(startVol, 0.0f, t / duration);
                 yield return null;
             }
 
@@ -324,27 +328,33 @@ namespace App.Managers {
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="tag"></param>
         /// <param name="newClip"></param>
         /// <param name="crossfadeTime"></param>
-        public void TransitionTo(App.Tools.Data.GenericTag tag, App.Tools.Data.SoundClip newClip, float crossfadeTime = 1.5f) {
-            if (!universalRegistry.TryGetValue(tag, out var currentSource) || currentSource == null) {
+        public void TryPlayUniversal(App.Tools.Data.SoundClip newClip, float crossfadeTime) {
+            if (!universalRegistry.TryGetValue(newClip.Tag, out AudioSource currentSource) || currentSource == null) {
                 PlayUniversalClip(newClip);
                 return;
             }
             
             AudioSource newSource = gameObject.AddComponent<AudioSource>();
+
             newSource.clip = newClip.GetClip();
-            newSource.volume = 0f;
+            newSource.volume = 0.0f;
             newSource.loop = newClip.Loop;
             newSource.playOnAwake = false;
 
-            if (mixerGroups.TryGetValue(newClip.Channel, out var group))
-                newSource.outputAudioMixerGroup = group;
+            if (mixerGroups.TryGetValue(newClip.Channel, out AudioMixerGroup group)) newSource.outputAudioMixerGroup = group;
 
             newSource.Play();
 
-            StartCoroutine(CrossfadeTracks(currentSource, newSource, newClip, tag, crossfadeTime));
+            StartCoroutine(CrossfadeUniversalTracks(currentSource, newSource, newClip, crossfadeTime));
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="newClip"></param>
+        public void TryPlayUniversal(App.Tools.Data.SoundClip newClip) {
+            TryPlayUniversal(newClip, 1.5f);
         }
     
         /// <summary>
@@ -356,21 +366,21 @@ namespace App.Managers {
         /// <param name="tag"></param>
         /// <param name="duration"></param>
         /// <returns></returns>
-        private IEnumerator CrossfadeTracks(AudioSource oldSource, AudioSource newSource, App.Tools.Data.SoundClip data, App.Tools.Data.GenericTag tag, float duration) {
-            float t = 0f;
+        private IEnumerator CrossfadeUniversalTracks(AudioSource oldSource, AudioSource newSource, App.Tools.Data.SoundClip data, float duration) {
+            float t = 0.0f;
             float oldVol = oldSource.volume;
 
             while (t < duration) {
                 t += Time.unscaledDeltaTime;
                 float f = t / duration;
-                oldSource.volume = Mathf.Lerp(oldVol, 0f, f);
-                newSource.volume = Mathf.Lerp(0f, data.Volume, f);
+                oldSource.volume = Mathf.Lerp(oldVol, 0.0f, f);
+                newSource.volume = Mathf.Lerp(0.0f, data.Volume, f);
                 yield return null;
             }
 
             oldSource.Stop();
             Destroy(oldSource);
-            universalRegistry[tag] = newSource;
+            universalRegistry[data.Tag] = newSource;
         }
 
         /// <summary>
@@ -380,6 +390,14 @@ namespace App.Managers {
             foreach (var kvp in this.universalRegistry) kvp.Value.Stop();
 
             this.universalRegistry.Clear();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private void StartPlayingSoundtrack() {
+            if(this.DEBUG) Debug.Log("[AM] Start playing SoundTrack.");
+            this.TryPlayUniversal(this.soundTrack);
         }
     }
 }
