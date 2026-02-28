@@ -1,6 +1,7 @@
 using UnityEngine.InputSystem.Utilities;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using UnityEngine;
 using System;
@@ -301,7 +302,7 @@ namespace App.Managers {
             // TODO: Add logic to handle already started games or just load MainMenu
             // ! Also, this is a direct call and reference, may be better to load from events as OnAppLoaded/Resumed
             // TODO: Adapt router to receive OnAppLoaded/Resumed events and remove strict calls
-            this.routerManager?.OnLoadMenu();
+            if(SceneManager.GetActiveScene().buildIndex == 0) App.Events.Application.OnMenuLoad?.Invoke();
         }
 
     // ? EVENT METHODS==============================================================================================================================

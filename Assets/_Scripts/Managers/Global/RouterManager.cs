@@ -70,6 +70,8 @@ namespace App.Managers {
             Events.Game.OnGameOver += this.OnEndGame;
             Events.Application.OnAppClosed += OnExitApp;
             Events.Settings.OnSettingsToggled += this.OnToggleSettings;
+
+            Events.Application.OnMenuLoad += this.OnLoadMenu;
         }
         
         /// <summary>
@@ -83,6 +85,8 @@ namespace App.Managers {
             Events.Game.OnGameOver -= this.OnEndGame;
             Events.Application.OnAppClosed -= this.OnExitApp;
             Events.Settings.OnSettingsToggled -= this.OnToggleSettings;
+
+            Events.Application.OnMenuLoad -= this.OnLoadMenu;
         }
 
     // ? CUSTOM METHODS=============================================================================================================================
@@ -93,7 +97,7 @@ namespace App.Managers {
         /// </summary>
         public void OnLoadMenu() {
             // TODO: Pending to be handled with event calls
-            if (SceneManager.GetActiveScene().buildIndex == 0) this.OnChangeScene(this.mainMenuSceneBuildIndex);
+            this.OnChangeScene(this.mainMenuSceneBuildIndex);
         }
 
         /// <summary>

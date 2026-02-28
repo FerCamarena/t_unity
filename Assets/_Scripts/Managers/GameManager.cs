@@ -10,7 +10,7 @@ namespace App.Game.Managers {
         /// <summary>
         /// 
         /// </summary>
-        private static bool DEBUG => false;
+        [SerializeField] private bool DEBUG = false;
 
     // ? PARAMETERS=================================================================================================================================
         // * REFERENCES
@@ -47,6 +47,10 @@ namespace App.Game.Managers {
     // ? CUSTOM METHODS=============================================================================================================================
         
     // ? EVENT METHODS==============================================================================================================================
+
+        public void OnPauseMenuToggle() {
+            App.Events.Settings.OnSettingsToggled?.Invoke();
+        }
     
     }
 }

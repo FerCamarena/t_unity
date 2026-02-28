@@ -71,5 +71,7 @@ namespace App.Events {
         /// 
         /// </summary>
         public static Action<string> OnShowSubtitle;
+
+        public static Action OnMenuLoad;
     }
 }

@@ -1,6 +1,7 @@
 //Libraries
 using System.Collections.Generic;
 using System.Collections;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine;
 using System;
@@ -248,8 +249,10 @@ namespace App.Game.Managers {
         private void Initialize() {
             //Sync value updated by reference since lifespan is same as Manager
             // TODO: Update to persistent data requested to Saves Manager
-            this.menuButton.SetActive(PlayerPrefs.GetInt("InGame", 0) == 1);
-            this.restartButton.SetActive(PlayerPrefs.GetInt("InGame", 0) == 1);
+            this.menuButton.SetActive(SceneManager.GetActiveScene().name == "Default");
+            this.restartButton.SetActive(SceneManager.GetActiveScene().name == "Default");
+
+            // Debug.Log();
             
             //Load settings default values
             this.LoadUnitySettingValues();
@@ -827,6 +830,8 @@ namespace App.Game.Managers {
                 
                 if (this.userConfirmCoroutine != null) this.StopCoroutine(this.userConfirmCoroutine);
                 this.userConfirmCoroutine = this.StartCoroutine(this.WaitUserConfirmation());
+            } else if(this.nextAction == App.Tools.Data.MenuAction.menu) {
+                App.Events.Application.OnMenuLoad?.Invoke();
             } else App.Events.Settings.OnSettingsToggled?.Invoke();
         }
 
